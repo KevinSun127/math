@@ -1,2 +1,2 @@
 # math
-Quick maths
+quick maths!
