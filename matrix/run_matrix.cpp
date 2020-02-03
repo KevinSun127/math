@@ -113,7 +113,7 @@ int main(){
     {
       std::cout << initialMatrix << std::endl;
     }
-  } while(find(choice, choices, 4));
+  } while(find(choice, choices, 5));
 
   return 0;
 }
