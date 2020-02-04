@@ -1,5 +1,6 @@
 #include "matrix.h"
 #include <cstddef>
+#include <iomanip>
 
 Matrix::Matrix():
 row_(0), col_(0), values(NULL)
@@ -70,12 +71,12 @@ void Matrix::enterValues()
 //product of two matrices
 Matrix Matrix::operator*(const Matrix& m) const
 {
-  Matrix prodMatrix(m.rowCount(), m.colCount());
+  Matrix prodMatrix(row_, m.colCount());
 
   for(std::size_t i = 0; i < row_; ++i)
     for(std::size_t j = 0; j < m.colCount(); ++j)
       for(std::size_t k = 0; k < col_; ++k)
-        prodMatrix.values[i][j]+=(values[i][k]*m.values[j][k]);
+        prodMatrix.values[i][j]+=(values[i][k]*m.values[k][j]);
 
     return prodMatrix;
 }
@@ -167,7 +168,8 @@ std::ostream& Matrix::print(std::ostream& out) const
     out << "| ";
     for(size_t j = 0; j < col_; ++j)
     {
-      out << values[i][j] << " ";
+      out << std::left << std::setw(6)
+      << values[i][j] << " " << std::setw(6) ;
     }
     out << "|" << std::endl;
   }
