@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include <math.h>
 #include <cstddef>
 #include <iomanip>
 
@@ -172,7 +173,8 @@ std::ostream& Matrix::print(std::ostream& out) const
     out << "| ";
     for(size_t j = 0; j < col_; ++j)
     {
-      out<< std::setw(6) << std::left << values[i][j] << " " << std::setw(6);
+      out<< std::setw(8) << std::left << roundf(values[i][j]*10000)/10000
+       << " " << std::setw(8);
     }
     out << "|" << std::endl;
   }
