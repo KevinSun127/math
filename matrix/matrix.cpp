@@ -16,9 +16,11 @@ row_(row), col_(col)
   for(int i = 0; i < row_; ++i)
   {
     values[i] = new double[col_];
+    //initalizes it to an identity matrix
     for(std::size_t j = 0; j < col_; ++j)
-      //iniitalizes all values to 0
+    {
       values[i][j] = 0;
+    }
   }
 
 }
@@ -69,6 +71,68 @@ bool Matrix::enterValues()
   }
   std::cout << std::endl;
   return true;
+}
+
+Matrix Matrix::inverse() const
+{
+  Matrix inverseMatrix(row_, col_);
+
+  for(std::size_t i = 0; i < row_; ++i)
+    for(std::size_t j = 0; j < col_; ++j)
+      if(i == j)
+        inverseMatrix.values[i][j] = 1;
+
+  if(row_!= col_)
+  {
+    std::cout << "Square Matrices only" << std::endl;
+    return inverseMatrix;
+  }
+
+  Matrix augMatrix(*this);
+
+  double rowFactor;
+  double addFactor;
+  for(std::size_t diag = 0; diag < row_; ++diag)
+  {
+    for(std::size_t i = diag; i < row_ - 1; ++i)
+    {
+      if(augMatrix.values[i][diag] > augMatrix.values[i + 1][diag]
+          && augMatrix.values[i+1][diag] != 0)
+      {
+        double* temp = augMatrix.values[i];
+        augMatrix.values[i] = augMatrix.values[i+1];
+        augMatrix.values[i+1] = temp;
+
+        double* temp2 = inverseMatrix.values[i];
+        inverseMatrix.values[i] = inverseMatrix.values[i+1];
+        inverseMatrix.values[i+1] = temp2;
+      }
+    }
+
+    rowFactor = (1/augMatrix.values[diag][diag]);
+    for(std::size_t j = 0; j < col_; ++j)
+    {
+      augMatrix.values[diag][j]*=rowFactor;
+      inverseMatrix.values[diag][j]*=rowFactor;
+    }
+    for(std::size_t i = 0; i < row_; ++i)
+    {
+      if(i != diag)
+      {
+        addFactor = augMatrix.values[i][diag];
+        for(std::size_t j = 0; j < col_; ++j)
+        {
+          augMatrix.values[i][j]-=addFactor*augMatrix.values[diag][j];
+          inverseMatrix.values[i][j]-=addFactor*inverseMatrix.values[diag][j];
+        }
+      }
+    }
+    // std::cout << augMatrix << std::endl;
+    // std::cout << inverseMatrix << std::endl;
+  }
+
+  return inverseMatrix;
+
 }
 
 
