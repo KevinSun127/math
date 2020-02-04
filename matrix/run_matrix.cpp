@@ -1,5 +1,4 @@
 #include "matrix.h"
-
 //displays possible options to user
 void displayMenu()
 {
@@ -9,9 +8,10 @@ void displayMenu()
     // 3. 's' calls subtraction
     // 4. 'r' resets the working matrix
     // 5. 'd' displays the working matrix
+    // 6. 'f' starts fraction conversion
 
   std::cout << "Options:" << std::endl;
-  std::cout << "m: mutliply, a:add, s:subtract, r:reset, d:display matrix" << std::endl;
+  std::cout << "m: mutliply, a:add, s:subtract, r:reset, d:display matrix, f:fraction-to_double" << std::endl;
 }
 
 //checks whether user choice is a viable one
@@ -28,24 +28,32 @@ bool find(const char& item, const char* list, const size_t len)
 //asks user for row, column values
 Matrix promptValues()
 {
-  size_t row1, col1;
-  do
+  size_t row, col;
+  std::cout << "Enter Non-Negative Number of Rows." << std::endl;
+  while(!(std::cin >> row) && row <= 0)
   {
+    std::cin.clear();
+    std::cin.ignore();
     std::cout << "Enter Non-Negative Number of Rows." << std::endl;
   }
-  while(std::cin >> row1 && row1 <= 0);
 
-  do
+  std::cout << "Enter Non-Negative Number of Columns." << std::endl;
+  while(!(std::cin >> col) && col <= 0)
   {
+    std::cin.clear();
+    std::cin.ignore();
     std::cout << "Enter Non-Negative Number of Columns." << std::endl;
   }
-  while(std::cin >> col1 && col1 <= 0);
-
   std::cout << std::endl;
 
   //declares new matrix, has the user enter values into it
-  Matrix initialMatrix = Matrix(row1, col1);
-  initialMatrix.enterValues();
+  Matrix initialMatrix(row, col);
+
+  while(!initialMatrix.enterValues())
+  {
+    std::cin.clear();
+    std::cin.ignore();
+  }
 
   return initialMatrix;
 }
@@ -53,15 +61,17 @@ Matrix promptValues()
 
 int main(){
   char choice;
-  char choices[] = {'m', 'a', 's', 'r', 'd'};
+  char choices[] = {'m', 'a', 's', 'r', 'd', 'f'};
 
   std::cout << "Initial Matrix:" << std::endl;
   Matrix initialMatrix = promptValues();
-
+  
   do
   {
-    //acquires user decision
+    std::string buffer;
+    // acquires user decision
     displayMenu();
+    getline(std::cin, buffer);
     std::cin >> choice;
     std::cout << std::endl;
 
@@ -113,7 +123,17 @@ int main(){
     {
       std::cout << initialMatrix << std::endl;
     }
-  } while(find(choice, choices, 5));
+
+    else if(choice == 'f')
+    {
+      std::cout << "Enter Fraction" << std::endl;
+      char slash;
+      int num, denom;
+      std::cin >> num >> slash >> denom;
+      std::cout << (num*1.0)/denom << std::endl;
+    }
+
+  } while(find(choice, choices, 6));
 
   return 0;
 }

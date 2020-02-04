@@ -17,7 +17,7 @@ class Matrix
     std::size_t colCount() const;
 
     //prompts the user to enter matrix values -- row by row
-    void enterValues();
+    bool enterValues();
 
     //Arithmetic + Assignment + Matrix Operators
     Matrix operator*(const Matrix& m) const;
@@ -37,7 +37,7 @@ class Matrix
     double** values;
 
     //stores number of rows and columns
-    int row_, col_;
+    std::size_t row_, col_;
 };
 
 #endif

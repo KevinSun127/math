@@ -54,16 +54,20 @@ std::size_t Matrix::colCount() const
   return col_;
 }
 
-void Matrix::enterValues()
+bool Matrix::enterValues()
 {
   for(std::size_t i = 0; i < row_; ++i)
   {
     //enter each row's values
     std::cout << "Enter row " << i +1 << "'s Values." << std::endl;
     for(std::size_t j = 0; j < col_; ++j)
-      std::cin >> values[i][j];
+    {
+      if(!(std::cin >> values[i][j]))
+        return false;
+    }
   }
   std::cout << std::endl;
+  return true;
 }
 
 
@@ -99,7 +103,7 @@ Matrix Matrix::operator-(const Matrix& m) const
 
   for(std::size_t i = 0; i < row_; ++i)
     for(std::size_t j = 0; j < col_; ++j)
-      diffMatrix.values[i][j] = values[i][j]-m.values[i][j];
+      diffMatrix.values[i][j] = values[i][j] - m.values[i][j];
 
     return diffMatrix;
 }
@@ -168,8 +172,7 @@ std::ostream& Matrix::print(std::ostream& out) const
     out << "| ";
     for(size_t j = 0; j < col_; ++j)
     {
-      out << std::left << std::setw(6)
-      << values[i][j] << " " << std::setw(6) ;
+      out<< std::setw(6) << std::left << values[i][j] << " " << std::setw(6);
     }
     out << "|" << std::endl;
   }
