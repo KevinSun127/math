@@ -19,6 +19,9 @@ class Matrix
     //prompts the user to enter matrix values -- row by row
     bool enterValues();
 
+    //returns inverse of Matrix
+    Matrix inverse() const;
+
     //Arithmetic + Assignment + Matrix Operators
     Matrix operator*(const Matrix& m) const;
     Matrix operator+(const Matrix& m) const;
@@ -31,6 +34,7 @@ class Matrix
     //outputting matrix
     std::ostream& print(std::ostream& out) const;
     friend std::ostream& operator<<(std::ostream& out, const Matrix& m);
+
 
   private:
     //stores the matrix in an array of doubles

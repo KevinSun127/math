@@ -75,18 +75,17 @@ bool Matrix::enterValues()
 
 Matrix Matrix::inverse() const
 {
-  Matrix inverseMatrix(row_, col_);
-
-  for(std::size_t i = 0; i < row_; ++i)
-    for(std::size_t j = 0; j < col_; ++j)
-      if(i == j)
-        inverseMatrix.values[i][j] = 1;
-
   if(row_!= col_)
   {
     std::cout << "Square Matrices only" << std::endl;
-    return inverseMatrix;
+    return *this;
   }
+
+  Matrix inverseMatrix(row_, col_);
+
+  for(std::size_t i = 0; i < row_; ++i)
+    inverseMatrix.values[i][i] = 1;
+
 
   Matrix augMatrix(*this);
 
@@ -109,6 +108,12 @@ Matrix Matrix::inverse() const
       }
     }
 
+    if(!augMatrix.values[diag][diag])
+    {
+      std::cout << "Inverse does not exist!" << std::endl;
+      return *this;
+    }
+
     rowFactor = (1/augMatrix.values[diag][diag]);
     for(std::size_t j = 0; j < col_; ++j)
     {
@@ -127,8 +132,6 @@ Matrix Matrix::inverse() const
         }
       }
     }
-    // std::cout << augMatrix << std::endl;
-    // std::cout << inverseMatrix << std::endl;
   }
 
   return inverseMatrix;
@@ -238,7 +241,7 @@ std::ostream& Matrix::print(std::ostream& out) const
     for(size_t j = 0; j < col_; ++j)
     {
       //outputs values rounded to nearest thousandth
-      out << std::setw(8) << std::left << roundf(values[i][j]*10000)/10000
+      out << std::setw(8) << std::left << round(values[i][j]*100000)/100000
        << " " << std::setw(8);
     }
     out << "|" << std::endl;
