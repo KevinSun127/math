@@ -37,14 +37,14 @@ Matrix promptValues()
 {
   int row, col;
   std::cout << "Enter Non-Negative Number of Rows." << std::endl;
-  while(!(std::cin >> row) || row <= 0)
+  while(!(std::cin >> row) || row <= 0 || row%1 != 0)
   {
     std::cin.clear();
     std::cin.ignore();
-    std::cout << "Enter Non-Negative Number of Rows." << std::endl;
+    std::cout << "Enter Non-Negative Integer of Rows." << std::endl;
   }
-  std::cout << "Enter Non-Negative Number of Columns." << std::endl;
-  while(!(std::cin >> col) || col <= 0)
+  std::cout << "Enter Non-Negative Integer of Columns." << std::endl;
+  while(!(std::cin >> col) || col <= 0 || col%1 != 0)
   {
     std::cin.clear();
     std::cin.ignore();
